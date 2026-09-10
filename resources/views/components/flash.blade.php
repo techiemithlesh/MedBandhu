@@ -1,0 +1,14 @@
+@if (session('status'))
+    <div class="rounded-md bg-teal-50 border border-teal-200 px-4 py-3 text-sm text-teal-800">{{ session('status') }}</div>
+@endif
+@if (session('error'))
+    <div class="rounded-md bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-800">{{ session('error') }}</div>
+@endif
+@if ($errors->any())
+    <div class="rounded-md bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-800">
+        <p class="font-medium">{{ __('Please fix the following:') }}</p>
+        <ul class="list-disc list-inside mt-1">
+            @foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach
+        </ul>
+    </div>
+@endif

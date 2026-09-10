@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Offline — MedBandhu</title>
+    <style>
+        :root { color-scheme: light; }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; min-height: 100vh; display: grid; place-items: center;
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            background: #f1f5f9; color: #334155; padding: 24px;
+        }
+        .card {
+            max-width: 380px; text-align: center; background: #fff; border-radius: 16px;
+            padding: 40px 28px; box-shadow: 0 10px 40px rgba(15, 23, 42, .08);
+        }
+        .badge {
+            width: 56px; height: 56px; margin: 0 auto 20px; border-radius: 14px;
+            background: #0d9488; display: grid; place-items: center; color: #fff;
+        }
+        h1 { font-size: 1.15rem; margin: 0 0 6px; color: #0f172a; }
+        p { font-size: .9rem; line-height: 1.5; margin: 0 0 20px; }
+        .hi { color: #64748b; font-size: .85rem; }
+        button {
+            appearance: none; border: 0; cursor: pointer; font: inherit; font-weight: 600;
+            background: #0d9488; color: #fff; border-radius: 10px; padding: 10px 20px;
+        }
+        button:hover { background: #0f766e; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="badge">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        </div>
+        <h1>You're offline</h1>
+        <p>
+            MedBandhu needs an internet connection for this page. Your saved work will sync once you're back online.
+            <br><span class="hi">आप ऑफ़लाइन हैं — इंटरनेट आने पर दोबारा कोशिश करें।</span>
+        </p>
+        <button onclick="location.reload()">Try again</button>
+    </div>
+</body>
+</html>
