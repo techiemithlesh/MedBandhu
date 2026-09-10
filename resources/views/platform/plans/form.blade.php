@@ -29,12 +29,24 @@
                         <x-text-input id="price_monthly" name="price_monthly" type="number" step="1" min="0" class="mt-1 block w-full" :value="old('price_monthly', $plan->price_monthly ?? 0)" required />
                     </div>
                     <div>
+                        <x-input-label for="price_half_yearly" value="Price / half-year (₹) *" />
+                        <x-text-input id="price_half_yearly" name="price_half_yearly" type="number" step="1" min="0" class="mt-1 block w-full" :value="old('price_half_yearly', $plan->price_half_yearly ?? 0)" required />
+                    </div>
+                    <div>
                         <x-input-label for="price_yearly" value="Price / year (₹) *" />
                         <x-text-input id="price_yearly" name="price_yearly" type="number" step="1" min="0" class="mt-1 block w-full" :value="old('price_yearly', $plan->price_yearly ?? 0)" required />
                     </div>
                     <div>
-                        <x-input-label for="price_extra_branch" value="Extra branch / cycle (₹) *" />
+                        <x-input-label for="price_extra_branch" value="Extra branch / year (₹) *" />
                         <x-text-input id="price_extra_branch" name="price_extra_branch" type="number" step="1" min="0" class="mt-1 block w-full" :value="old('price_extra_branch', $plan->price_extra_branch ?? 0)" required />
+                    </div>
+                    <div>
+                        <x-input-label for="price_perpetual" value="Perpetual licence, one-time (₹)" />
+                        <x-text-input id="price_perpetual" name="price_perpetual" type="number" step="1" min="0" class="mt-1 block w-full" :value="old('price_perpetual', $plan->price_perpetual)" />
+                    </div>
+                    <div>
+                        <x-input-label for="price_amc" value="AMC / year for perpetual (₹)" />
+                        <x-text-input id="price_amc" name="price_amc" type="number" step="1" min="0" class="mt-1 block w-full" :value="old('price_amc', $plan->price_amc)" />
                     </div>
                     <div>
                         <x-input-label for="branch_limit" value="Branch limit *" />

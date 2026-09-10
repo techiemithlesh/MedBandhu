@@ -100,22 +100,22 @@ MEDBANDHU_EMAIL="hello@medbandhu.com"
 MEDBANDHU_ADDRESS="Ranchi, Jharkhand, India"
 
 # Email — REQUIRED for payment receipts + activation emails to actually send.
-# Use a Hostinger mailbox or a transactional provider (Brevo, Resend, Zoho).
+# Create the hello@medbandhu.com mailbox in hPanel, then paste its password below.
 MAIL_MAILER=smtp
 MAIL_HOST=smtp.hostinger.com
 MAIL_PORT=465
 MAIL_USERNAME=hello@medbandhu.com
-MAIL_PASSWORD=<mailbox password>
+MAIL_PASSWORD=<paste the mailbox password>
 MAIL_SCHEME=smtps
 MAIL_FROM_ADDRESS="hello@medbandhu.com"
 MAIL_FROM_NAME="MedBandhu"
 
-# Manual payment flow — where hospitals send subscription payments.
-MEDBANDHU_PAY_UPI=medbandhu@okaxis
+# Manual payment flow — shown to hospitals on their billing page.
+MEDBANDHU_PAY_UPI="7667043372@axisbank"
 MEDBANDHU_PAY_AC_NAME="MedBandhu"
-MEDBANDHU_PAY_BANK="<bank, branch>"
-MEDBANDHU_PAY_AC_NUMBER=<account no>
-MEDBANDHU_PAY_IFSC=<ifsc>
+MEDBANDHU_PAY_BANK="Axis Bank, Ranchi"
+MEDBANDHU_PAY_AC_NUMBER="39998363584"
+MEDBANDHU_PAY_IFSC="UTIB0000837"
 
 # Razorpay — leave blank until you have live keys (online payments stay disabled)
 RAZORPAY_KEY_ID=
