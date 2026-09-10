@@ -91,6 +91,10 @@ QUEUE_CONNECTION=database
 
 SESSION_SECURE_COOKIE=true
 
+# Platform super admin — pick a strong password; db:seed creates the account.
+SUPER_ADMIN_EMAIL=you@medbandhu.com
+SUPER_ADMIN_PASSWORD=<a strong password>
+
 DEMO_MODE=true
 DEMO_EMAIL=demo@medbandhu.test
 
@@ -127,22 +131,17 @@ Then:
 
 ```bash
 php artisan migrate --force
-php artisan db:seed --class=Database\\Seeders\\DemoPlansSeeder --force   # loads the public plans (+ demo hospital)
+php artisan db:seed --force          # roles, plans, your super admin (from .env), + the demo hospital
 php artisan storage:link
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 ```
 
-Create the **platform super admin** (has no hospital):
-
-```bash
-php artisan tinker
->>> $u = \App\Models\User::create(['name'=>'You','email'=>'you@medbandhu.com','password'=>'<strong-password>','is_active'=>true]);
->>> setPermissionsTeamId(config('hms.platform_team_id'));
->>> $u->assignRole('Super Admin');   // create the role first if needed: see hms:sync-roles
->>> exit
-```
+`db:seed` creates the platform super admin from `SUPER_ADMIN_EMAIL` / `SUPER_ADMIN_PASSWORD`.
+Log in at `https://medbandhu.com/login` and confirm it works. The demo hospital
+(`/demo`) and its sample data are also created — that's expected, it powers the public demo
+and resets nightly.
 
 (If `Super Admin` doesn't exist yet, run the platform provisioner path once — creating the first
 hospital from `/platform/hospitals` also syncs roles. Easiest: create a throwaway hospital, then
