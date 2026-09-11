@@ -27,6 +27,36 @@ return [
         'hospital_code' => 'DEMO',
     ],
 
+    // Cities with a dedicated local-SEO landing page at
+    // /hospital-management-software/{slug}. Add a row here to publish a new
+    // city page + sitemap entry — nothing else to change.
+    'cities' => [
+        ['slug' => 'patna', 'name' => 'Patna', 'state' => 'Bihar'],
+        ['slug' => 'gaya', 'name' => 'Gaya', 'state' => 'Bihar'],
+        ['slug' => 'muzaffarpur', 'name' => 'Muzaffarpur', 'state' => 'Bihar'],
+        ['slug' => 'bhagalpur', 'name' => 'Bhagalpur', 'state' => 'Bihar'],
+        ['slug' => 'darbhanga', 'name' => 'Darbhanga', 'state' => 'Bihar'],
+        ['slug' => 'purnia', 'name' => 'Purnia', 'state' => 'Bihar'],
+        ['slug' => 'siwan', 'name' => 'Siwan', 'state' => 'Bihar'],
+        ['slug' => 'gopalganj', 'name' => 'Gopalganj', 'state' => 'Bihar'],
+        ['slug' => 'chhapra', 'name' => 'Chhapra', 'state' => 'Bihar'],
+        ['slug' => 'motihari', 'name' => 'Motihari', 'state' => 'Bihar'],
+        ['slug' => 'ranchi', 'name' => 'Ranchi', 'state' => 'Jharkhand'],
+        ['slug' => 'jamshedpur', 'name' => 'Jamshedpur', 'state' => 'Jharkhand'],
+        ['slug' => 'dhanbad', 'name' => 'Dhanbad', 'state' => 'Jharkhand'],
+        ['slug' => 'bokaro', 'name' => 'Bokaro', 'state' => 'Jharkhand'],
+        ['slug' => 'hazaribagh', 'name' => 'Hazaribagh', 'state' => 'Jharkhand'],
+        ['slug' => 'deoghar', 'name' => 'Deoghar', 'state' => 'Jharkhand'],
+        ['slug' => 'raipur', 'name' => 'Raipur', 'state' => 'Chhattisgarh'],
+        ['slug' => 'bilaspur', 'name' => 'Bilaspur', 'state' => 'Chhattisgarh'],
+        ['slug' => 'durg', 'name' => 'Durg', 'state' => 'Chhattisgarh'],
+        ['slug' => 'korba', 'name' => 'Korba', 'state' => 'Chhattisgarh'],
+        ['slug' => 'kolkata', 'name' => 'Kolkata', 'state' => 'West Bengal'],
+        ['slug' => 'howrah', 'name' => 'Howrah', 'state' => 'West Bengal'],
+        ['slug' => 'asansol', 'name' => 'Asansol', 'state' => 'West Bengal'],
+        ['slug' => 'siliguri', 'name' => 'Siliguri', 'state' => 'West Bengal'],
+    ],
+
     // Public contact details — shown on the marketing site / landing page.
     'contact' => [
         'phone' => env('MEDBANDHU_PHONE', '+91 90000 00000'),

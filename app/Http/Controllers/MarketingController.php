@@ -30,6 +30,46 @@ class MarketingController extends Controller
         ]);
     }
 
+    /** Local-SEO index page linking to every city page (also keeps them crawlable). */
+    public function cities()
+    {
+        if (Auth::check()) {
+            return redirect()->route('dashboard');
+        }
+
+        return view('marketing.cities', [
+            'cities' => collect(config('hms.cities'))->groupBy('state'),
+            'contact' => config('hms.contact'),
+        ]);
+    }
+
+    /** "Hospital management software in {city}" — same product, local framing. */
+    public function city(string $citySlug)
+    {
+        if (Auth::check()) {
+            return redirect()->route('dashboard');
+        }
+
+        $city = collect(config('hms.cities'))->firstWhere('slug', $citySlug);
+        abort_unless($city, 404);
+
+        $plans = Plan::query()
+            ->where('is_active', true)
+            ->where('is_public', true)
+            ->orderBy('sort_order')
+            ->get();
+
+        return view('marketing.city', [
+            'city' => $city,
+            'otherCities' => collect(config('hms.cities'))->reject(fn ($c) => $c['slug'] === $citySlug)->values(),
+            'plans' => $plans,
+            'contact' => config('hms.contact'),
+            'features' => $this->features(),
+            'whys' => $this->whys(),
+            'faqs' => $this->faqs($city),
+        ]);
+    }
+
     public function robots(): Response
     {
         $base = rtrim(config('app.url'), '/');
@@ -84,18 +124,35 @@ class MarketingController extends Controller
         $base = rtrim(config('app.url'), '/');
         $today = now()->toDateString();
 
+        $urls = [
+            ['loc' => $base.'/', 'priority' => '1.0', 'changefreq' => 'weekly'],
+            ['loc' => $base.'/hospital-management-software', 'priority' => '0.8', 'changefreq' => 'weekly'],
+        ];
+
+        foreach (config('hms.cities') as $city) {
+            $urls[] = [
+                'loc' => $base.'/hospital-management-software/'.$city['slug'],
+                'priority' => '0.7',
+                'changefreq' => 'monthly',
+            ];
+        }
+
         $xml = '<?xml version="1.0" encoding="UTF-8"?>'."\n"
-            .'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">'."\n"
-            .'  <url>'."\n"
-            .'    <loc>'.$base.'/</loc>'."\n"
-            .'    <lastmod>'.$today.'</lastmod>'."\n"
-            .'    <changefreq>weekly</changefreq>'."\n"
-            .'    <priority>1.0</priority>'."\n"
-            .'    <xhtml:link rel="alternate" hreflang="en-IN" href="'.$base.'/?lang=en"/>'."\n"
-            .'    <xhtml:link rel="alternate" hreflang="hi-IN" href="'.$base.'/?lang=hi"/>'."\n"
-            .'    <xhtml:link rel="alternate" hreflang="x-default" href="'.$base.'/"/>'."\n"
-            .'  </url>'."\n"
-            .'</urlset>'."\n";
+            .'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">'."\n";
+
+        foreach ($urls as $u) {
+            $xml .= '  <url>'."\n"
+                .'    <loc>'.$u['loc'].'</loc>'."\n"
+                .'    <lastmod>'.$today.'</lastmod>'."\n"
+                .'    <changefreq>'.$u['changefreq'].'</changefreq>'."\n"
+                .'    <priority>'.$u['priority'].'</priority>'."\n"
+                .'    <xhtml:link rel="alternate" hreflang="en-IN" href="'.$u['loc'].'?lang=en"/>'."\n"
+                .'    <xhtml:link rel="alternate" hreflang="hi-IN" href="'.$u['loc'].'?lang=hi"/>'."\n"
+                .'    <xhtml:link rel="alternate" hreflang="x-default" href="'.$u['loc'].'"/>'."\n"
+                .'  </url>'."\n";
+        }
+
+        $xml .= '</urlset>'."\n";
 
         return response($xml, 200, ['Content-Type' => 'application/xml; charset=UTF-8']);
     }
@@ -174,12 +231,15 @@ class MarketingController extends Controller
         ];
     }
 
-    /** @return array<int, array{0:string,1:string}> question, answer */
-    private function faqs(): array
+    /**
+     * @param  array{slug:string,name:string,state:string}|null  $city
+     * @return array<int, array{0:string,1:string}> question, answer
+     */
+    private function faqs(?array $city = null): array
     {
         $app = config('app.name');
 
-        return [
+        $list = [
             ['What is '.$app.'?', $app.' is cloud-based hospital management software (HMS) for hospitals and nursing homes in India. It covers patient registration and OPD, appointments, IPD and bed management, pharmacy and stock, GST billing and reports — across multiple branches, in Hindi or English.'],
             ['How much does '.$app.' cost?', 'Plans start at ₹799 per month (or ₹7,999 per year) for a single-branch clinic and ₹1,499 per month for a full hospital with IPD. Every plan includes unlimited patients, unlimited staff logins, free setup and WhatsApp support. A 14-day free trial needs no card.'],
             ['Do we need to buy servers or install anything?', 'No. '.$app.' runs in the cloud. Any computer or phone with a web browser works — even at the reception desk. It can also be installed as an app on a phone or laptop.'],
@@ -189,5 +249,14 @@ class MarketingController extends Controller
             ['How do we pay?', 'UPI, card or bank transfer through Razorpay, with a proper GST invoice. Monthly or yearly — your choice. A one-time perpetual licence is also available for hospitals that prefer to own the software.'],
             ['Which areas do you serve?', $app.' works for hospitals anywhere in India. We started with hospitals across Bihar, Jharkhand, Chhattisgarh and eastern India, and support is available in Hindi and English.'],
         ];
+
+        if ($city) {
+            $list[] = [
+                "Do you support hospitals in {$city['name']}?",
+                "Yes — {$app} is used by hospitals and nursing homes in {$city['name']}, {$city['state']}, and we can set your hospital up the same day. Support is available on WhatsApp and phone in Hindi and English, and we'll come to your hospital to help with setup where we can.",
+            ];
+        }
+
+        return $list;
     }
 }

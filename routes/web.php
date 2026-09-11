@@ -43,6 +43,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [MarketingController::class, 'home'])->name('home');
 
+// Local-SEO city pages — one per city in config('hms.cities').
+Route::get('/hospital-management-software', [MarketingController::class, 'cities'])->name('marketing.cities');
+Route::get('/hospital-management-software/{city}', [MarketingController::class, 'city'])
+    ->where('city', '[a-z-]+')->name('marketing.city');
+
 // One-click public demo — logs the visitor into the shared demo hospital.
 Route::get('/demo', [\App\Http\Controllers\DemoController::class, 'enter'])
     ->middleware('throttle:20,1')->name('demo.enter');

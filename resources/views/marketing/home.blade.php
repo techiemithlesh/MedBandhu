@@ -458,6 +458,7 @@
                     <li><a href="#features" class="hover:text-teal-700">{{ __('Features') }}</a></li>
                     <li><a href="#pricing" class="hover:text-teal-700">{{ __('Pricing') }}</a></li>
                     <li><a href="{{ route('demo.enter') }}" class="hover:text-teal-700">Live demo</a></li>
+                    <li><a href="{{ route('marketing.cities') }}" class="hover:text-teal-700">Cities we serve</a></li>
                     <li><a href="{{ route('login') }}" class="hover:text-teal-700">{{ __('Log in') }}</a></li>
                 </ul>
             </div>
