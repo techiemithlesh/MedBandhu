@@ -6,7 +6,7 @@
     $canonical = $base.'/';
     $ogImage = $base.'/icons/og-image.png';
     $seoTitle = $app.' — Hospital Management Software (HMS) for India | OPD, IPD, Pharmacy & Billing';
-    $seoDesc = $app.' is cloud hospital management software for hospitals and nursing homes in India — patient registration & OPD, appointments, IPD & bed management, pharmacy stock, GST billing and reports across every branch. Hindi & English. 14-day free trial.';
+    $seoDesc = $app.' is cloud hospital management software for hospitals and nursing homes in India — patient registration & OPD, appointments, IPD & bed management, pharmacy stock, GST billing and reports across every branch. Hindi & English. Free setup, live the same day.';
 @endphp
 <head>
     <meta charset="utf-8">
@@ -181,7 +181,7 @@
                     <a href="{{ $wa }}" target="_blank" rel="noopener"
                        class="rounded-lg border border-slate-300 bg-white px-6 py-3 text-center text-sm font-semibold text-slate-700 hover:border-teal-400 hover:text-teal-700">{{ __('Talk to us on WhatsApp') }}</a>
                 </div>
-                <p class="mt-4 text-sm text-slate-500">{{ __('14-day free trial · no card needed · your data stays yours') }}</p>
+                <p class="mt-4 text-sm text-slate-500">{{ __('No card needed · we set it up for you · your data stays yours') }}</p>
             </div>
 
             {{-- product mock --}}
@@ -293,7 +293,9 @@
         $guarantees = [
             __('No per-user fee — pay the same for 4 staff or 40'),
             __('No per-appointment or per-booking charges, ever'),
-            __('Free setup and free data migration from your registers'),
+            __('Free setup and free data migration — we come to your hospital and move your registers in ourselves'),
+            __('Live the same day — no waiting weeks to onboard'),
+            __('Cancel or downgrade anytime on standard plans — no lock-in, export everything first'),
             __('Export your patients, bills and stock any day'),
             __('Hosted in India · DPDP-ready · your data stays yours'),
             __('WhatsApp &amp; phone support in Hindi and English'),
@@ -333,17 +335,23 @@
                                 <div>
                                     <span class="text-3xl font-extrabold text-slate-900">₹{{ number_format($plan->price_yearly, 0) }}</span>
                                     <span class="text-sm text-slate-500">/{{ __('year') }}</span>
-                                    <div class="text-xs text-slate-400">{{ __('or') }} ₹{{ number_format($plan->price_half_yearly, 0) }} {{ __('half-yearly') }}</div>
+                                    <div class="text-xs text-slate-400">
+                                        ≈ ₹{{ number_format($plan->price_monthly, 0) }}/{{ __('mo') }} · {{ __('or') }} ₹{{ number_format($plan->price_half_yearly, 0) }} {{ __('half-yearly') }} · +18% {{ __('GST') }}
+                                    </div>
                                 </div>
                             </template>
                             <template x-if="!yearly">
                                 <div>
                                     <span class="text-3xl font-extrabold text-slate-900">₹{{ number_format($plan->price_monthly, 0) }}</span>
                                     <span class="text-sm text-slate-500">/{{ __('month') }}</span>
-                                    <div class="text-xs text-slate-400">{{ __('Save') }} ₹{{ number_format($plan->price_monthly * 12 - $plan->price_yearly, 0) }} {{ __('a year by paying yearly') }}</div>
+                                    <div class="text-xs text-slate-400">
+                                        ₹{{ number_format($plan->price_yearly, 0) }}/{{ __('year if billed yearly') }} ({{ __('save') }} ₹{{ number_format($plan->price_monthly * 12 - $plan->price_yearly, 0) }}) · +18% {{ __('GST') }}
+                                    </div>
                                 </div>
                             </template>
                         </div>
+
+                        <p class="mt-3 text-sm font-bold text-slate-800">{{ __('Unlimited users — no per-seat fee') }}</p>
 
                         @if ($plan->price_extra_branch > 0)
                             <p class="mt-2 text-xs text-slate-500">{{ __('1 branch · add more at') }} ₹{{ number_format($plan->price_extra_branch, 0) }}/{{ __('year each') }}</p>
@@ -356,7 +364,7 @@
                                'mt-6 rounded-lg px-4 py-2.5 text-center text-sm font-semibold',
                                'bg-teal-600 text-white hover:bg-teal-700' => $featured,
                                'bg-slate-100 text-slate-800 hover:bg-slate-200' => ! $featured,
-                           ])>{{ __('Start 14-day free trial') }}</a>
+                           ])>{{ __('Talk to us about') }} {{ $plan->name }}</a>
 
                         @if ($featured)
                             <p class="mt-3 rounded-md bg-amber-50 px-3 py-2 text-xs text-amber-800">
@@ -393,12 +401,19 @@
                 </p>
             </div>
 
-            <p class="mt-8 text-center text-sm text-slate-500">
-                {{ __('Prefer to own it?') }} {{ __('One-time perpetual licence') }}
-                @if ($hospitalPlan && $hospitalPlan->price_perpetual)
-                    — ₹{{ number_format($hospitalPlan->price_perpetual, 0) }} + ₹{{ number_format($hospitalPlan->price_amc, 0) }}/{{ __('year AMC') }} —
-                @endif
-                {{ __('also available.') }}
+            @if ($hospitalPlan && $hospitalPlan->price_perpetual)
+                <div class="mt-8 flex flex-col items-center gap-3 rounded-2xl border border-teal-100 bg-teal-50/60 px-6 py-5 text-center sm:flex-row sm:justify-between sm:text-left">
+                    <div>
+                        <p class="text-sm font-bold text-slate-900">{{ __('Prefer to own it outright?') }}</p>
+                        <p class="mt-1 text-sm text-slate-600">
+                            {{ __('One-time perpetual licence') }} — <span class="font-semibold text-slate-800">₹{{ number_format($hospitalPlan->price_perpetual, 0) }}</span> + ₹{{ number_format($hospitalPlan->price_amc, 0) }}/{{ __('year AMC') }} (+18% {{ __('GST') }}). {{ __('No subscription — yours for good, AMC covers updates and support.') }}
+                        </p>
+                    </div>
+                    <a href="{{ $wa }}" target="_blank" rel="noopener" class="flex-none rounded-lg bg-white px-4 py-2 text-sm font-semibold text-teal-700 shadow-sm ring-1 ring-teal-200 hover:bg-teal-50">{{ __('Ask about the perpetual licence') }}</a>
+                </div>
+            @endif
+
+            <p class="mt-4 text-center text-sm text-slate-500">
                 {{ __('Running a chain?') }}
                 <a href="{{ $wa }}" target="_blank" rel="noopener" class="font-semibold text-teal-700 hover:underline">{{ __('Ask about Enterprise') }}</a>.
             </p>

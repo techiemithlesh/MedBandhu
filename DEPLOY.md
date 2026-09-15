@@ -58,8 +58,8 @@ cd ~/domains/medbandhu.com
 
 # Laravel must serve from /public, not public_html
 rm -rf public_html
-git clone https://github.com/<you>/medbandhu.git app
-ln -s ~/domains/medbandhu.com/app/public ~/domains/medbandhu.com/public_html
+git clone https://github.com/techiemithlesh/MedBandhu MedBandhu
+ln -s ~/domains/medbandhu.com/MedBandhu/public ~/domains/medbandhu.com/public_html
 
 cd app
 composer install --no-dev --optimize-autoloader
@@ -146,6 +146,63 @@ and resets nightly.
 (If `Super Admin` doesn't exist yet, run the platform provisioner path once — creating the first
 hospital from `/platform/hospitals` also syncs roles. Easiest: create a throwaway hospital, then
 attach yourself as Super Admin, or run `php artisan hms:sync-roles`.)
+
+---
+
+## 2b. One-time cutover from a file-manager (flat) deployment to this git layout
+
+If the live site was set up by hand-uploading files (no `git clone` on the server — the earlier
+flat `public_html/` layout with the `usePublicPath(__DIR__)` patch and the custom `.htaccess`
+deny-rules), switch to the clean git layout **once**, over SSH. After this, every future deploy is
+just `git pull` — no more file-manager uploads, and the security-through-`.htaccess` hack goes
+away entirely because `app/`, `config/`, `vendor/`, `.env` etc. end up *outside* the web root.
+
+**Do this in order — nothing here touches the database, only files.**
+
+```bash
+ssh -p <port> <user>@<host>
+cd ~/domains/medbandhu.com
+
+# 1. Save the live .env somewhere safe FIRST — it has the real DB password, SMTP
+#    password, bank/UPI details and APP_KEY. Do not regenerate APP_KEY: that would
+#    invalidate every existing session/cookie and any encrypted DB values.
+cp public_html/.env ~/env-backup-$(date +%Y%m%d).env
+
+# 2. If any hospital has uploaded files (staff photos etc.), save those too —
+#    harmless to run even if the folder is empty/missing.
+cp -r public_html/storage/app/public ~/storage-backup-$(date +%Y%m%d) 2>/dev/null || true
+
+# 3. Move the old flat deployment aside — do NOT delete it yet, it's your rollback.
+mv public_html public_html_old_flat_$(date +%Y%m%d)
+
+# 4. Clone the real repo into a proper app/ folder (public repo, no auth needed).
+git clone https://github.com/techiemithlesh/MedBandhu.git app
+cd app
+composer install --no-dev --optimize-autoloader
+
+# 5. Restore the real .env (exact copy — don't hand-retype the secrets).
+cp ~/env-backup-*.env .env
+
+# 6. Restore any uploaded files, then create the standard storage symlink.
+cp -r ~/storage-backup-*/. storage/app/public/ 2>/dev/null || true
+php artisan storage:link
+
+# 7. Point the web root at app/public instead of the old flat folder.
+cd ~/domains/medbandhu.com
+ln -s ~/domains/medbandhu.com/app/public ~/domains/medbandhu.com/public_html
+
+cd app
+php artisan migrate --force        # no-op if the schema's already current — DB is untouched either way
+php artisan config:cache && php artisan route:cache && php artisan view:cache
+```
+
+Then check `https://medbandhu.com/` loads, `/login` works with your real admin account, and
+`/llms.txt` shows the new content — before deleting `public_html_old_flat_*`. Keep that backup
+folder for a few days as a rollback (`rm -rf public_html && mv public_html_old_flat_* public_html`
+undoes the whole cutover instantly if something's wrong).
+
+If cron wasn't set up under the flat layout, add it now — see section 3 below, but point it at
+`~/domains/medbandhu.com/app/artisan` (the new path).
 
 ---
 

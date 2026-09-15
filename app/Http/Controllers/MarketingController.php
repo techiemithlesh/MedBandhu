@@ -243,12 +243,12 @@ class MarketingController extends Controller
 
         $list = [
             ['What is '.$app.'?', $app.' is cloud-based hospital management software (HMS) for hospitals and nursing homes in India. It covers patient registration and OPD, appointments, IPD and bed management, pharmacy and stock, GST billing and reports — across multiple branches, in Hindi or English.'],
-            ['How much does '.$app.' cost?', 'Plans start at ₹799 per month (or ₹7,999 per year) for a single-branch clinic and ₹1,499 per month for a full hospital with IPD. Every plan includes unlimited patients, unlimited staff logins, free setup and WhatsApp support. A 14-day free trial needs no card.'],
+            ['How much does '.$app.' cost?', 'Plans start at ₹799 per month (or ₹7,999 per year) for a single-branch clinic and ₹1,499 per month for a full hospital with IPD, plus 18% GST. Every plan includes unlimited users, free setup and WhatsApp support, with no card needed to get started — talk to us and we set your hospital up personally.'],
             ['Do we need to buy servers or install anything?', 'No. '.$app.' runs in the cloud. Any computer or phone with a web browser works — even at the reception desk. It can also be installed as an app on a phone or laptop.'],
             ['Can we move our old paper records in?', 'Yes. Send us your patient list, doctor list and current stock in any format — Excel, or even photos of registers — and we load it during setup, free of charge.'],
             ['What if the internet goes down?', 'Pages are built to be light and to recover quickly, and records sync as soon as you are back online. The installable app keeps the last screens available offline.'],
             ['Is our patient data safe?', 'Each hospital’s data is isolated so only your logged-in staff can see it. You can export everything at any time, and we never sell or share your data.'],
-            ['How do we pay?', 'UPI, card or bank transfer through Razorpay, with a proper GST invoice. Monthly or yearly — your choice. A one-time perpetual licence is also available for hospitals that prefer to own the software.'],
+            ['How do we pay?', 'UPI or bank transfer, with a proper GST invoice — message us the reference and we confirm it the same day. Monthly or yearly, your choice. A one-time perpetual licence is also available for hospitals that prefer to own the software.'],
             ['Which areas do you serve?', $app.' works for hospitals anywhere in India. We started with hospitals across Bihar, Jharkhand, Chhattisgarh and eastern India, and support is available in Hindi and English.'],
         ];
 

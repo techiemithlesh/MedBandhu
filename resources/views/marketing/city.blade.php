@@ -6,7 +6,7 @@
     $canonical = $base.'/hospital-management-software/'.$city['slug'];
     $ogImage = $base.'/icons/og-image.png';
     $seoTitle = 'Hospital Management Software in '.$city['name'].' | '.$app;
-    $seoDesc = $app.' — cloud hospital management software for hospitals and nursing homes in '.$city['name'].', '.$city['state'].'. OPD, IPD & beds, pharmacy, GST billing and reports, in Hindi or English. 14-day free trial, free setup.';
+    $seoDesc = $app.' — cloud hospital management software for hospitals and nursing homes in '.$city['name'].', '.$city['state'].'. OPD, IPD & beds, pharmacy, GST billing and reports, in Hindi or English. Free setup, live the same day.';
 @endphp
 <head>
     <meta charset="utf-8">
@@ -163,7 +163,7 @@
                     <a href="{{ $wa }}" target="_blank" rel="noopener"
                        class="rounded-lg border border-slate-300 bg-white px-6 py-3 text-center text-sm font-semibold text-slate-700 hover:border-teal-400 hover:text-teal-700">{{ __('Talk to us on WhatsApp') }}</a>
                 </div>
-                <p class="mt-4 text-sm text-slate-500">14-day free trial · no card needed · setup free for hospitals in {{ $city['name'] }}</p>
+                <p class="mt-4 text-sm text-slate-500">No card needed · setup free for hospitals in {{ $city['name'] }} · your data stays yours</p>
 
                 @php
                     $localOffice = collect($contact['offices'] ?? [])->firstWhere('city_slug', $city['slug']);
@@ -273,10 +273,14 @@
                         @if ($featured)<span class="mb-3 inline-block rounded-full bg-teal-100 px-3 py-0.5 text-xs font-semibold text-teal-800">Most popular</span>@endif
                         <h3 class="text-lg font-bold text-slate-900">{{ $plan->name }}</h3>
                         <p class="mt-1 text-sm text-slate-500">{{ $plan->description }}</p>
-                        <div class="mt-4"><span class="text-3xl font-extrabold text-slate-900">₹{{ number_format($plan->price_yearly, 0) }}</span><span class="text-sm text-slate-500">/year</span></div>
+                        <div class="mt-4">
+                            <span class="text-3xl font-extrabold text-slate-900">₹{{ number_format($plan->price_yearly, 0) }}</span><span class="text-sm text-slate-500">/year</span>
+                            <div class="text-xs text-slate-400">≈ ₹{{ number_format($plan->price_monthly, 0) }}/mo · +18% GST</div>
+                        </div>
+                        <p class="mt-2 text-sm font-bold text-slate-800">Unlimited users — no per-seat fee</p>
                         <a href="{{ $wa }}" target="_blank" rel="noopener"
                            @class(['mt-6 block rounded-lg px-4 py-2.5 text-center text-sm font-semibold', 'bg-teal-600 text-white hover:bg-teal-700' => $featured, 'bg-slate-100 text-slate-800 hover:bg-slate-200' => ! $featured])>
-                           Start free trial in {{ $city['name'] }}
+                           Talk to us about {{ $city['name'] }}
                         </a>
                     </div>
                 @endforeach
