@@ -8,7 +8,7 @@
 @endphp
 
 <div class="h-16 flex items-center gap-2 px-4 border-b border-slate-700">
-    <span class="inline-flex items-center justify-center h-9 w-9 rounded-lg bg-teal-500 text-white font-bold">{{ substr(config('app.name', 'M'), 0, 1) }}</span>
+    <img src="{{ asset('icons/icon-192.png') }}" alt="" class="h-9 w-9 rounded-lg flex-none">
     <div class="min-w-0">
         <div class="text-sm font-semibold text-white truncate">{{ $hospital?->name ?? config('app.name').' '.__('Platform') }}</div>
         <div class="text-[11px] text-slate-400 truncate">{{ $hospital?->code ?? __('super admin') }}</div>

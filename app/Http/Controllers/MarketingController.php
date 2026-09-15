@@ -157,40 +157,42 @@ class MarketingController extends Controller
         return response($xml, 200, ['Content-Type' => 'application/xml; charset=UTF-8']);
     }
 
+    /**
+     * llms.txt (llmstxt.org): only the H1 is required; everything before the
+     * final H2 sections must be heading-free body content, and every H2
+     * section must be a markdown link list, not prose — so feature/pricing/
+     * FAQ copy stays as plain paragraphs and only "## Links" uses headings.
+     */
     public function llms(): Response
     {
         $app = config('app.name');
         $base = rtrim(config('app.url'), '/');
+        $cities = collect(config('hms.cities'))->pluck('name')->implode(', ');
 
         $lines = ["# {$app}", '',
             "> {$app} is cloud-based hospital management software (HMS) for hospitals and nursing homes in India. It covers patient registration and OPD, appointments, IPD and bed management, pharmacy and stock, GST billing, and reports — across multiple branches, with a Hindi or English interface.",
             '',
-            '## What it does',
+            '**What it does**',
         ];
         foreach ($this->features() as [$title, $body]) {
-            $lines[] = "- **{$title}**: {$body}";
+            $lines[] = "- {$title}: {$body}";
         }
         $lines[] = '';
-        $lines[] = '## Pricing';
+        $lines[] = '**Pricing** (flat, no per-user fee)';
         foreach (Plan::where('is_active', true)->where('is_public', true)->orderBy('sort_order')->get() as $p) {
-            $lines[] = "- **{$p->name}** — ₹".number_format($p->price_monthly, 0)."/month or ₹".number_format($p->price_yearly, 0)."/year. {$p->description}.";
+            $lines[] = "- {$p->name} — ₹".number_format($p->price_monthly, 0)."/month or ₹".number_format($p->price_yearly, 0)."/year. ".rtrim($p->description, '.').'.';
         }
-        $lines[] = '- 14-day free trial, no card required. Monthly or yearly billing via UPI/card/bank transfer with GST invoice. One-time perpetual licence also available.';
+        $lines[] = '- Billed monthly or yearly via UPI or bank transfer, with a GST invoice; a one-time perpetual licence is also available. Card payment is not yet supported.';
         $lines[] = '';
-        $lines[] = '## Who it is for';
-        $lines[] = 'Single and multi-branch hospitals, nursing homes and polyclinics in India — especially smaller cities. Started with hospitals across Bihar, Jharkhand, Chhattisgarh and eastern India.';
+        $lines[] = '**Who it is for**';
+        $lines[] = "Single and multi-branch hospitals, nursing homes and polyclinics in India — especially tier-2/3 cities. Founder-onboarded, not self-signup: a hospital talks to the team (WhatsApp or a visit) before going live. Serving hospitals in {$cities} and anywhere else in India on request.";
         $lines[] = '';
         $lines[] = '## Links';
-        $lines[] = "- Website: {$base}/";
-        $lines[] = "- Live demo: {$base}/demo";
+        $lines[] = "- Homepage: {$base}/";
+        $lines[] = "- Live demo (explore real screens, no signup): {$base}/demo";
         $lines[] = "- Pricing: {$base}/#pricing";
-        $lines[] = '';
-        $lines[] = '## FAQ';
-        foreach ($this->faqs() as [$q, $a]) {
-            $lines[] = "### {$q}";
-            $lines[] = $a;
-            $lines[] = '';
-        }
+        $lines[] = "- Frequently asked questions: {$base}/#faq";
+        $lines[] = "- Cities served: {$base}/hospital-management-software";
 
         return response(implode("\n", $lines), 200, ['Content-Type' => 'text/plain; charset=UTF-8']);
     }

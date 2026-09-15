@@ -125,9 +125,7 @@
     <header class="sticky top-0 z-40 border-b border-slate-100 bg-white/90 backdrop-blur">
         <div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
             <a href="/" class="flex items-center gap-2 text-lg font-extrabold tracking-tight text-slate-900">
-                <span class="grid h-9 w-9 place-items-center rounded-xl bg-teal-600 text-white">
-                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-                </span>
+                <img src="{{ asset('icons/icon-192.png') }}" alt="" class="h-9 w-9 rounded-xl">
                 {{ config('app.name') }}
             </a>
 
@@ -445,9 +443,7 @@
         <div class="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:px-6 md:grid-cols-3">
             <div>
                 <div class="flex items-center gap-2 text-lg font-extrabold tracking-tight text-slate-900">
-                    <span class="grid h-8 w-8 place-items-center rounded-lg bg-teal-600 text-white">
-                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-                    </span>
+                    <img src="{{ asset('icons/icon-192.png') }}" alt="" class="h-8 w-8 rounded-lg">
                     {{ config('app.name') }}
                 </div>
                 <p class="mt-3 text-sm text-slate-500">Cloud hospital management software (HMS) for growing hospitals and nursing homes across India — with roots in Bihar, Jharkhand and Chhattisgarh. Available in Hindi and English.</p>
@@ -468,7 +464,9 @@
                     <li><a href="{{ $wa }}" target="_blank" rel="noopener" class="hover:text-teal-700">WhatsApp: {{ $contact['phone'] }}</a></li>
                     <li><a href="tel:{{ preg_replace('/\s/', '', $contact['phone']) }}" class="hover:text-teal-700">Call: {{ $contact['phone'] }}</a></li>
                     <li><a href="mailto:{{ $contact['email'] }}" class="hover:text-teal-700">{{ $contact['email'] }}</a></li>
-                    <li>{{ $contact['address'] }}</li>
+                    @foreach ($contact['offices'] ?? [] as $office)
+                        <li>{{ $office['label'] }}: {{ $office['address'] }}</li>
+                    @endforeach
                 </ul>
             </div>
         </div>

@@ -63,6 +63,12 @@ return [
         'whatsapp' => env('MEDBANDHU_WHATSAPP', '919000000000'),
         'email' => env('MEDBANDHU_EMAIL', 'hello@medbandhu.com'),
         'address' => env('MEDBANDHU_ADDRESS', 'Patna, Bihar, India'),
+        // Every office shown in the footer, and matched by city slug for a
+        // local-presence callout on that city's SEO page (see city.blade.php).
+        'offices' => [
+            ['city_slug' => 'ranchi', 'label' => 'Ranchi (HQ)', 'address' => env('MEDBANDHU_ADDRESS', 'Ranchi, Jharkhand, India')],
+            ['city_slug' => 'kolkata', 'label' => 'Kolkata', 'address' => env('MEDBANDHU_ADDRESS_KOLKATA', 'VIP Enclave, VIP Road, Block F, 201, Kolkata 700059, West Bengal')],
+        ],
     ],
 
     // Where hospitals send their subscription payment (manual / offline flow,

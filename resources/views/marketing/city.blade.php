@@ -101,9 +101,7 @@
     <header class="sticky top-0 z-40 border-b border-slate-100 bg-white/90 backdrop-blur">
         <div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
             <a href="{{ route('home') }}" class="flex items-center gap-2 text-lg font-extrabold tracking-tight text-slate-900">
-                <span class="grid h-9 w-9 place-items-center rounded-xl bg-teal-600 text-white">
-                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-                </span>
+                <img src="{{ asset('icons/icon-192.png') }}" alt="" class="h-9 w-9 rounded-xl">
                 {{ $app }}
             </a>
 
@@ -166,6 +164,16 @@
                        class="rounded-lg border border-slate-300 bg-white px-6 py-3 text-center text-sm font-semibold text-slate-700 hover:border-teal-400 hover:text-teal-700">{{ __('Talk to us on WhatsApp') }}</a>
                 </div>
                 <p class="mt-4 text-sm text-slate-500">14-day free trial · no card needed · setup free for hospitals in {{ $city['name'] }}</p>
+
+                @php
+                    $localOffice = collect($contact['offices'] ?? [])->firstWhere('city_slug', $city['slug']);
+                @endphp
+                @if ($localOffice)
+                    <div class="mt-6 inline-flex items-start gap-2 rounded-lg border border-teal-100 bg-teal-50/60 px-4 py-3 text-sm text-teal-900">
+                        <svg class="mt-0.5 h-4 w-4 flex-none text-teal-600" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9.69 18.933a.75.75 0 0 0 .62 0c.121-.055 4.653-2.143 7.196-5.371C18.945 11.868 20 9.63 20 7.5 20 3.358 16.418 0 12 0S4 3.358 4 7.5c0 2.13 1.055 4.368 2.494 6.062 2.543 3.228 7.075 5.316 7.196 5.371Zm-1.69-11.433a4 4 0 1 1 8 0 4 4 0 0 1-8 0Z" clip-rule="evenodd"/></svg>
+                        <span>We have a local office in {{ $city['name'] }} — {{ $localOffice['address'] }}</span>
+                    </div>
+                @endif
             </div>
 
             <div class="relative">
@@ -323,9 +331,7 @@
         <div class="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:px-6 md:grid-cols-3">
             <div>
                 <div class="flex items-center gap-2 text-lg font-extrabold tracking-tight text-slate-900">
-                    <span class="grid h-8 w-8 place-items-center rounded-lg bg-teal-600 text-white">
-                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-                    </span>
+                    <img src="{{ asset('icons/icon-192.png') }}" alt="" class="h-8 w-8 rounded-lg">
                     {{ $app }}
                 </div>
                 <p class="mt-3 text-sm text-slate-500">Cloud hospital management software for growing hospitals and nursing homes across India — with roots in Bihar, Jharkhand and Chhattisgarh.</p>
@@ -344,7 +350,9 @@
                 <ul class="mt-3 space-y-2 text-slate-600">
                     <li><a href="{{ $wa }}" target="_blank" rel="noopener" class="hover:text-teal-700">WhatsApp: {{ $contact['phone'] }}</a></li>
                     <li><a href="mailto:{{ $contact['email'] }}" class="hover:text-teal-700">{{ $contact['email'] }}</a></li>
-                    <li>{{ $contact['address'] }}</li>
+                    @foreach ($contact['offices'] ?? [] as $office)
+                        <li>{{ $office['label'] }}: {{ $office['address'] }}</li>
+                    @endforeach
                 </ul>
             </div>
         </div>

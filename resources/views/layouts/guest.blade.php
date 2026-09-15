@@ -24,9 +24,7 @@
                 <div aria-hidden="true" class="pointer-events-none absolute -bottom-32 -left-16 h-80 w-80 rounded-full bg-teal-400/20 blur-2xl"></div>
 
                 <a href="/" class="relative flex items-center gap-3 text-lg font-bold tracking-tight">
-                    <span class="grid h-10 w-10 place-items-center rounded-xl bg-white/15 ring-1 ring-white/25">
-                        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-                    </span>
+                    <img src="{{ asset('icons/icon-192.png') }}" alt="" class="h-10 w-10 rounded-xl ring-1 ring-white/25">
                     {{ config('app.name', 'HMS') }}
                 </a>
 
@@ -56,9 +54,7 @@
                 <div class="w-full max-w-sm">
                     {{-- mobile logo --}}
                     <a href="/" class="lg:hidden mb-8 flex items-center justify-center gap-2 text-lg font-bold tracking-tight text-teal-700">
-                        <span class="grid h-9 w-9 place-items-center rounded-xl bg-teal-600 text-white">
-                            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-                        </span>
+                        <img src="{{ asset('icons/icon-192.png') }}" alt="" class="h-9 w-9 rounded-xl">
                         {{ config('app.name', 'HMS') }}
                     </a>
 

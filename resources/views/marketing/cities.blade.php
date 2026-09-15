@@ -38,9 +38,7 @@
     <header class="sticky top-0 z-40 border-b border-slate-100 bg-white/90 backdrop-blur">
         <div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
             <a href="{{ route('home') }}" class="flex items-center gap-2 text-lg font-extrabold tracking-tight text-slate-900">
-                <span class="grid h-9 w-9 place-items-center rounded-xl bg-teal-600 text-white">
-                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-                </span>
+                <img src="{{ asset('icons/icon-192.png') }}" alt="" class="h-9 w-9 rounded-xl">
                 {{ $app }}
             </a>
             <div class="hidden items-center gap-3 md:flex">

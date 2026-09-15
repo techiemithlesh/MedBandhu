@@ -33,6 +33,28 @@ return Application::configure(basePath: dirname(__DIR__))
             DemoMode::class,
         ]);
 
+        // `web(append:)` places these after the group's default SubstituteBindings,
+        // so implicit route-model binding (e.g. `Patient $patient`) was resolving
+        // BEFORE InitializeTenancy set the tenant — the per-model TenantScope was
+        // a no-op at bind time, so any hospital's user could load any other
+        // hospital's record by guessing its numeric ID. Explicit priority forces
+        // tenant context to be bound first on every request.
+        $middleware->priority([
+            \Illuminate\Cookie\Middleware\EncryptCookies::class,
+            \Illuminate\Session\Middleware\StartSession::class,
+            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+            \Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests::class,
+            SetLocale::class,
+            InitializeTenancy::class,
+            EnforceSubscription::class,
+            DemoMode::class,
+            \Illuminate\Routing\Middleware\ThrottleRequests::class,
+            \Illuminate\Routing\Middleware\ThrottleRequestsWithRedis::class,
+            \Illuminate\Session\Middleware\AuthenticateSession::class,
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \Illuminate\Auth\Middleware\Authorize::class,
+        ]);
+
         // Payment-gateway callbacks arrive without our CSRF token.
         $middleware->validateCsrfTokens(except: [
             'billing/subscription/invoices/*/callback',
